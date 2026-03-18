@@ -58,9 +58,9 @@ onMounted(() => {
   <Suspense>
     <NScrollbar ref="scrollbarRef" class="h-0 flex-auto">
       <Teleport defer to="#header-extra">
-        <div class="px-10">
+        <div class="review-filter px-10">
           <NForm :model="params" label-placement="left" :show-feedback="false" inline>
-            <NFormItem label="时间">
+            <NFormItem label="复习范围">
               <NDatePicker v-model:value="range" type="daterange" />
             </NFormItem>
           </NForm>
@@ -75,4 +75,11 @@ onMounted(() => {
   </Suspense>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.review-filter {
+  :deep(.n-form-item-label__text) {
+    font-weight: 600;
+    color: #1d4ed8;
+  }
+}
+</style>

@@ -209,7 +209,7 @@ async function handleSourceFileClick(fileInfo: { fileName: string, referenceNumb
 </script>
 
 <template>
-  <div class="mb-8 flex-col gap-2">
+  <div class="message-card mb-8 flex-col gap-2">
     <div v-if="msg.role === 'user'" class="flex items-center gap-4">
       <NAvatar class="bg-success">
         <SvgIcon icon="ph:user-circle" class="text-icon-large color-white" />
@@ -224,7 +224,7 @@ async function handleSourceFileClick(fileInfo: { fileName: string, referenceNumb
         <SystemLogo class="text-6 text-white" />
       </NAvatar>
       <div class="flex-col gap-1">
-        <NText class="text-4 font-bold">派聪明</NText>
+        <NText class="text-4 font-bold">考辅智聊</NText>
         <NText class="text-3 color-gray-500">{{ formatDate(msg.timestamp) }}</NText>
       </div>
     </div>
@@ -232,10 +232,10 @@ async function handleSourceFileClick(fileInfo: { fileName: string, referenceNumb
       <icon-eos-icons:three-dots-loading class="ml-12 mt-2 text-8" />
     </NText>
     <NText v-else-if="msg.status === 'error'" class="ml-12 mt-2 italic">服务器繁忙，请稍后再试</NText>
-    <div v-else-if="msg.role === 'assistant'" class="mt-2 pl-12" @click="handleContentClick">
+    <div v-else-if="msg.role === 'assistant'" class="assistant-bubble mt-2 pl-12" @click="handleContentClick">
       <VueMarkdownIt :content="content" />
     </div>
-    <NText v-else-if="msg.role === 'user'" class="ml-12 mt-2 text-4">{{ content }}</NText>
+    <NText v-else-if="msg.role === 'user'" class="user-bubble ml-12 mt-2 text-4">{{ content }}</NText>
     <NDivider class="ml-12 w-[calc(100%-3rem)] mb-0! mt-2!" />
     <div class="ml-12 flex gap-4">
       <NButton quaternary @click="handleCopy(msg.content)">
@@ -248,6 +248,35 @@ async function handleSourceFileClick(fileInfo: { fileName: string, referenceNumb
 </template>
 
 <style scoped lang="scss">
+.message-card {
+  border-radius: 14px;
+  padding: 8px 10px;
+}
+
+.assistant-bubble {
+  border-left: 3px solid rgba(37, 99, 235, 0.7);
+  background: rgba(239, 246, 255, 0.58);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.user-bubble {
+  background: rgba(236, 253, 245, 0.8);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.dark {
+  .assistant-bubble {
+    background: rgba(30, 58, 138, 0.2);
+    border-left-color: rgba(96, 165, 250, 0.86);
+  }
+
+  .user-bubble {
+    background: rgba(15, 23, 42, 0.7);
+  }
+}
+
 :deep(.source-file-link) {
   color: #1890ff;
   cursor: pointer;

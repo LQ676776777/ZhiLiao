@@ -246,7 +246,7 @@ public class ChatHandler {
                 logger.debug("会话 {} 没有历史记录", conversationId);
                 return new ArrayList<>();
             }
-            
+            // 将json转换为List<Map<String, String>>,使用TypeReference防止泛型擦除
             List<Map<String, String>> history = objectMapper.readValue(json, new TypeReference<List<Map<String, String>>>() {});
             logger.debug("读取到会话 {} 的 {} 条历史记录", conversationId, history.size());
             return history;

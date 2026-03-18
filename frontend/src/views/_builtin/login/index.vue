@@ -45,8 +45,10 @@ const bgColor = computed(() => {
 </script>
 
 <template>
-  <div class="relative size-full flex-center" :style="{ backgroundColor: bgColor }">
-    <NCard :bordered="false" class="relative z-4 w-auto card-wrapper">
+  <div class="login-page relative size-full flex-center" :style="{ backgroundColor: bgColor }">
+    <div class="bg-orb bg-orb-left"></div>
+    <div class="bg-orb bg-orb-right"></div>
+    <NCard :bordered="false" class="login-card relative z-4 w-auto card-wrapper">
       <div class="w-400px lt-sm:w-300px">
         <header class="flex-y-center justify-between">
           <SystemLogo class="text-64px text-primary lt-sm:text-48px" />
@@ -68,6 +70,9 @@ const bgColor = computed(() => {
           </div>
         </header>
         <main class="pt-24px">
+          <p class="mb-3 text-13px color-#475569 dark:color-#94a3b8">
+            基于 RAG 检索增强与 LLM 推理的考试复习聊天助手
+          </p>
           <h3 class="text-18px text-primary font-medium">{{ $t(activeModule.label) }}</h3>
           <div class="pt-24px">
             <Transition :name="themeStore.page.animateMode" mode="out-in" appear>
@@ -80,4 +85,44 @@ const bgColor = computed(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.login-page {
+  overflow: hidden;
+}
+
+.login-card {
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(239, 246, 255, 0.88)),
+    #fff;
+}
+
+.bg-orb {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 999px;
+  filter: blur(68px);
+  opacity: 0.26;
+  pointer-events: none;
+}
+
+.bg-orb-left {
+  left: -140px;
+  top: -120px;
+  background: #38bdf8;
+}
+
+.bg-orb-right {
+  right: -160px;
+  bottom: -130px;
+  background: #34d399;
+}
+
+.dark .login-card {
+  border-color: rgba(96, 165, 250, 0.3);
+  background:
+    linear-gradient(135deg, rgba(30, 41, 59, 0.82), rgba(15, 23, 42, 0.8)),
+    #111827;
+}
+</style>

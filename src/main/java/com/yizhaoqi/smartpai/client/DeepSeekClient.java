@@ -115,6 +115,7 @@ public class DeepSeekClient {
         sysBuilder.append(refEnd);
 
         String systemContent = sysBuilder.toString();
+        // 1.规则+引用的参考资料
         messages.add(Map.of(
             "role", "system",
             "content", systemContent

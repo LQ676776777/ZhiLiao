@@ -87,29 +87,46 @@ const handShortcut = (e: KeyboardEvent) => {
 </script>
 
 <template>
-  <div class="relative w-full b-1 b-#1c1c1c20 bg-#fff p-4 card-wrapper dark:bg-#1c1c1c">
+  <div class="exam-input-panel relative w-full p-4 card-wrapper">
     <textarea
       ref="inputRef"
       v-model.trim="input.message"
-      placeholder="给 派聪明 发送消息"
+      placeholder="向 考辅智聊 提问：知识点、真题、错题复盘、考前冲刺..."
       class="min-h-10 w-full cursor-text resize-none b-none bg-transparent color-#333 caret-[rgb(var(--primary-color))] outline-none dark:color-#f1f1f1"
       @keydown="handShortcut"
     />
     <div class="flex items-center justify-between pt-2">
       <div class="flex items-center text-18px color-gray-500">
-        <NText class="text-14px">连接状态：</NText>
+        <NText class="text-14px">通道状态：</NText>
         <icon-eos-icons:loading v-if="wsStatus === 'CONNECTING'" class="color-yellow" />
         <icon-fluent:plug-connected-checkmark-20-filled v-else-if="wsStatus === 'OPEN'" class="color-green" />
         <icon-tabler:plug-connected-x v-else class="color-red" />
       </div>
-      <NButton :disabled="sendable" strong circle type="primary" @click="handleSend">
-        <template #icon>
-          <icon-material-symbols:stop-rounded v-if="isSending" />
-          <icon-guidance:send v-else />
-        </template>
-      </NButton>
+      <div class="flex items-center gap-3">
+        <NText class="text-12px color-#6b7280 dark:color-#9ca3af">Enter 发送，Ctrl/Shift+Enter 换行</NText>
+        <NButton :disabled="sendable" strong circle type="primary" @click="handleSend">
+          <template #icon>
+            <icon-material-symbols:stop-rounded v-if="isSending" />
+            <icon-guidance:send v-else />
+          </template>
+        </NButton>
+      </div>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.exam-input-panel {
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  background:
+    linear-gradient(135deg, rgba(239, 246, 255, 0.9), rgba(236, 253, 245, 0.72)),
+    #fff;
+}
+
+.dark .exam-input-panel {
+  border-color: rgba(96, 165, 250, 0.28);
+  background:
+    linear-gradient(135deg, rgba(30, 41, 59, 0.78), rgba(17, 24, 39, 0.82)),
+    #1c1c1c;
+}
+</style>

@@ -4,10 +4,41 @@ import InputBox from './modules/input-box.vue';
 </script>
 
 <template>
-  <div class="flex-col gap-4">
+  <div class="chat-page flex-col gap-4">
+    <section class="exam-hero card-wrapper">
+      <h2 class="text-22px font-700 color-#0f172a dark:color-#e2e8f0">考辅智聊</h2>
+      <p class="mt-2 text-14px color-#334155 dark:color-#94a3b8">
+        面向考试复习的 RAG + LLM 聊天助手，支持知识点梳理、真题解析、错题复盘与冲刺提纲。
+      </p>
+    </section>
     <ChatList />
     <InputBox />
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.chat-page {
+  min-height: calc(100vh - 140px);
+  padding: 8px 10px 2px;
+  background: radial-gradient(circle at 0% 0%, rgba(37, 99, 235, 0.08), transparent 42%);
+}
+
+.exam-hero {
+  border: 1px solid rgba(14, 165, 233, 0.24);
+  background:
+    linear-gradient(120deg, rgba(239, 246, 255, 0.92), rgba(224, 242, 254, 0.78)),
+    #fff;
+  padding: 14px 18px;
+}
+
+.dark .chat-page {
+  background: radial-gradient(circle at 0% 0%, rgba(30, 64, 175, 0.2), transparent 42%);
+}
+
+.dark .exam-hero {
+  border-color: rgba(59, 130, 246, 0.34);
+  background:
+    linear-gradient(120deg, rgba(30, 41, 59, 0.88), rgba(15, 23, 42, 0.84)),
+    #111827;
+}
+</style>
