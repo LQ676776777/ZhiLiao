@@ -323,7 +323,7 @@ public class ChatHandler {
                     sessionId, i + 1, fileLabel, fileMd5);
             }
         }
-
+ 
         // 保存当前会话的引用映射
         sessionReferenceMappings.put(sessionId, referenceMapping);
         logger.info("保存会话 {} 的引用映射，共 {} 条: {}", sessionId, referenceMapping.size(), referenceMapping);
