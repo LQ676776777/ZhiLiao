@@ -1,4 +1,4 @@
-﻿# 考辅智聊（PaiSmart）
+﻿# 考辅智聊
 
 基于 RAG（Retrieval-Augmented Generation）的智能考辅问答系统，面向私有知识库场景，支持文档上传解析、语义检索与大模型问答。
 
