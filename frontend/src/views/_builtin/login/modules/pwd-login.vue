@@ -31,7 +31,8 @@ const rules = computed<Record<keyof FormModel, App.Global.FormRule[]>>(() => {
   const { formRules } = useFormRules();
 
   return {
-    userName: formRules.userName,
+    // 允许邮箱或昵称：不强制走用户名的长度规则，仅校验非空即可，后端会再校验格式
+    userName: [{ required: true, message: '请输入账号或邮箱', trigger: 'blur' }],
     password: formRules.pwd
   };
 });
@@ -56,7 +57,7 @@ function openPrivacyModal() {
   <div class="flex-col gap-0">
     <NForm ref="formRef" :model="model" :rules="rules" size="large" :show-label="false" @keyup.enter="handleSubmit">
       <NFormItem path="userName">
-        <NInput v-model:value="model.userName" :placeholder="$t('page.login.common.userNamePlaceholder')">
+        <NInput v-model:value="model.userName" placeholder="请输入账号或邮箱">
           <template #prefix>
             <icon-ant-design:user-outlined />
           </template>
@@ -75,6 +76,11 @@ function openPrivacyModal() {
         </NInput>
       </NFormItem>
       <div class="flex-col gap-6">
+        <div class="flex justify-end">
+          <NButton text type="primary" size="small" @click="toggleLoginModule('reset-pwd')">
+            忘记密码？
+          </NButton>
+        </div>
         <NButton type="primary" size="large" round block :loading="authStore.loginLoading" @click="handleSubmit">
           {{ $t('page.login.common.login') }}
         </NButton>

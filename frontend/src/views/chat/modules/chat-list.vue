@@ -9,6 +9,7 @@ defineOptions({
 
 const chatStore = useChatStore();
 const { list, sessionId } = storeToRefs(chatStore);
+const authStore = useAuthStore();
 
 const loading = ref(false);
 const scrollbarRef = ref<InstanceType<typeof NScrollbar>>();
@@ -33,11 +34,25 @@ const params = computed(() => {
   };
 });
 
-watchEffect(() => {
-  getList();
-});
+watch(
+  [() => authStore.userInfo.id, params],
+  ([id]) => {
+    if (id) getList();
+  },
+  { immediate: true }
+);
 
 async function getList() {
+  // 如果AI正在流式回复或列表中有未完成的消息，跳过从服务器重新加载
+  // 避免覆盖正在接收的实时数据（后端在回复完成后才会持久化对话历史）
+  if (chatStore.streaming) {
+    return;
+  }
+  const lastMsg = list.value[list.value.length - 1];
+  if (lastMsg?.role === 'assistant' && ['loading', 'pending'].includes(lastMsg.status || '')) {
+    return;
+  }
+
   loading.value = true;
   const { error, data } = await request<Api.Chat.Message[]>({
     url: 'users/conversation',

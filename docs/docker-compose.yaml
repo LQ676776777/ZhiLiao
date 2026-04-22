@@ -173,7 +173,8 @@ services:
         condition: service_healthy
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - JAVA_OPTS=-Xmx512m -Xms256m
+      - JAVA_OPTS=-Xmx512m -Xms256m -Duser.timezone=Asia/Shanghai
+      - TZ=Asia/Shanghai
     deploy:
       resources:
         limits:

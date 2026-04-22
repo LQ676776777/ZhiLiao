@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive, computed, onBeforeUnmount } from 'vue';
 import { $t } from '@/locales';
+import { fetchRegister, fetchSendEmailCode } from '@/service/api/auth';
 
 defineOptions({
   name: 'Register'
@@ -13,31 +14,86 @@ const privacyModalVisible = ref(false);
 
 interface FormModel {
   username: string;
+  email: string;
+  emailCode: string;
   password: string;
   confirmPassword: string;
 }
 
 const model: FormModel = reactive({
   username: '',
+  email: '',
+  emailCode: '',
   password: '',
   confirmPassword: ''
 });
+
+const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
 const rules = computed<Record<keyof FormModel, App.Global.FormRule[]>>(() => {
   const { formRules, createConfirmPwdRule } = useFormRules();
 
   return {
     username: formRules.userName,
+    email: [
+      { required: true, message: '请输入邮箱', trigger: 'blur' },
+      {
+        validator: (_r, v: string) => !v || EMAIL_RE.test(v),
+        message: '邮箱格式不正确',
+        trigger: 'blur'
+      }
+    ],
+    emailCode: [
+      { required: true, message: '请输入邮箱验证码', trigger: 'blur' },
+      { pattern: /^\d{6}$/, message: '验证码为 6 位数字', trigger: 'blur' }
+    ],
     password: formRules.pwd,
     confirmPassword: createConfirmPwdRule(model.password)
   };
+});
+
+// ====== 发送验证码 + 倒计时 ======
+const sending = ref(false);
+const countdown = ref(0);
+let timer: ReturnType<typeof setInterval> | null = null;
+
+const codeBtnLabel = computed(() => {
+  if (countdown.value > 0) return `${countdown.value}s 后重试`;
+  if (sending.value) return '发送中...';
+  return '获取验证码';
+});
+
+async function handleSendCode() {
+  if (countdown.value > 0) return;
+  if (!model.email || !EMAIL_RE.test(model.email)) {
+    window.$message?.error('请先输入正确的邮箱');
+    return;
+  }
+  sending.value = true;
+  const { error } = await fetchSendEmailCode(model.email, 'register');
+  sending.value = false;
+  if (!error) {
+    window.$message?.success('验证码已发送，请查收邮箱');
+    countdown.value = 60;
+    timer = setInterval(() => {
+      countdown.value -= 1;
+      if (countdown.value <= 0 && timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }, 1000);
+  }
+}
+
+onBeforeUnmount(() => {
+  if (timer) clearInterval(timer);
 });
 
 const loading = ref(false);
 async function handleSubmit() {
   await validate();
   loading.value = true;
-  const { error } = await fetchRegister(model.username, model.password);
+  const { error } = await fetchRegister(model.username, model.password, model.email, model.emailCode);
   if (!error) {
     window.$message?.success('注册成功');
     toggleLoginModule('pwd-login');
@@ -63,6 +119,30 @@ function openPrivacyModal() {
             <icon-ant-design:user-outlined />
           </template>
         </NInput>
+      </NFormItem>
+      <NFormItem path="email">
+        <NInput v-model:value="model.email" placeholder="请输入常用邮箱">
+          <template #prefix>
+            <icon-ant-design:mail-outlined />
+          </template>
+        </NInput>
+      </NFormItem>
+      <NFormItem path="emailCode">
+        <div class="flex w-full gap-8px">
+          <NInput v-model:value="model.emailCode" placeholder="6位验证码" maxlength="6">
+            <template #prefix>
+              <icon-ant-design:safety-certificate-outlined />
+            </template>
+          </NInput>
+          <NButton
+            :disabled="countdown > 0 || sending"
+            :loading="sending"
+            style="flex-shrink: 0; min-width: 128px;"
+            @click="handleSendCode"
+          >
+            {{ codeBtnLabel }}
+          </NButton>
+        </div>
       </NFormItem>
       <NFormItem path="password">
         <NInput

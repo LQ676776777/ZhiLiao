@@ -12,8 +12,33 @@ const props = defineProps<{
 
 const authStore = useAuthStore();
 
+function copyTextCompat(text: string) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    return;
+  }
+  fallbackCopy(text);
+}
+
+function fallbackCopy(text: string) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.top = '0';
+  ta.style.left = '0';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+  } finally {
+    document.body.removeChild(ta);
+  }
+}
+
 function handleCopy(content: string) {
-  navigator.clipboard.writeText(content);
+  copyTextCompat(content);
   window.$message?.success('已复制');
 }
 
@@ -139,8 +164,7 @@ async function handleSourceFileClick(fileInfo: { fileName: string, referenceNumb
           params: {
             sessionId: props.sessionId,
             referenceNumber: referenceNumber.toString()
-          },
-          baseURL: '/proxy-api'
+          }
         });
 
         console.log('引用MD5查询结果:', { error: md5Error, data: md5Data });
@@ -161,8 +185,7 @@ async function handleSourceFileClick(fileInfo: { fileName: string, referenceNumb
         params: {
           fileMd5: targetMd5,
           token: authStore.token
-        },
-        baseURL: '/proxy-api'
+        }
       });
 
       console.log('文件下载结果:', { error: downloadError, data: downloadData });
@@ -183,8 +206,7 @@ async function handleSourceFileClick(fileInfo: { fileName: string, referenceNumb
       params: {
         fileName: fileName,
         token: authStore.token
-      },
-      baseURL: '/proxy-api'
+      }
     });
 
     window.$message?.destroyAll();
