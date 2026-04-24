@@ -51,11 +51,11 @@ async function handleNewConversation() {
 .chat-page {
   min-height: calc(100vh - 140px);
   padding: 8px 10px 2px;
-  background: radial-gradient(circle at 0% 0%, rgba(37, 99, 235, 0.08), transparent 42%);
+  background: radial-gradient(circle at 0% 0%, rgba(6, 95, 70, 0.08), transparent 42%);
 }
 
 .exam-hero {
-  border: 1px solid rgba(14, 165, 233, 0.24);
+  border: 1px solid rgba(15, 118, 110, 0.24);
   background:
     linear-gradient(120deg, rgba(239, 246, 255, 0.92), rgba(224, 242, 254, 0.78)),
     #fff;
@@ -63,11 +63,11 @@ async function handleNewConversation() {
 }
 
 .dark .chat-page {
-  background: radial-gradient(circle at 0% 0%, rgba(30, 64, 175, 0.2), transparent 42%);
+  background: radial-gradient(circle at 0% 0%, rgba(6, 95, 70, 0.2), transparent 42%);
 }
 
 .dark .exam-hero {
-  border-color: rgba(59, 130, 246, 0.34);
+  border-color: rgba(4, 120, 87, 0.34);
   background:
     linear-gradient(120deg, rgba(30, 41, 59, 0.88), rgba(15, 23, 42, 0.84)),
     #111827;

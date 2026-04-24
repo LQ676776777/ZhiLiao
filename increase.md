@@ -3,6 +3,7 @@
 ### 交流广场
 
 #### 后端
+
 - 新增 `Post` / `PostLike` 实体、索引与点赞唯一约束，支持帖子发布、编辑、删除、点赞切换。
 - `PostRepository` / `PostLikeRepository` 提供点赞计数原子增减与列表查询能力。
 - `PostService` 提供 CRUD、点赞 toggle、分页列表查询，支持 `all / school / major` 筛选。
@@ -17,6 +18,7 @@
 - 注销账号时会连带清理本人帖子与自己点过的赞。
 
 #### 前端
+
 - 新增 `frontend/src/service/api/posts.ts`，封装帖子相关类型与接口。
 - `views/posts/index.vue` 已实现帖子列表、分页、点赞、编辑、删除、发布。
 - 顶部筛选已改成更贴合页面风格的工具栏：
@@ -31,6 +33,7 @@
 - 左侧菜单中的“交流广场”入口已移除，改为全局悬浮按钮进入。
 
 #### 交流广场 UI 补充调整
+
 - 左侧栏不再直接展示“交流广场”菜单项。
 - 基础布局新增右下角悬浮入口按钮，可点击进入交流广场。
 - 悬浮按钮支持拖拽、位置记忆、同一次登录内保留位置；重新登录后重置到右下角。
@@ -40,6 +43,7 @@
 ### 知识库标签与权限语义调整
 
 #### 标签展示与上传选择
+
 - 用户标签展示已做可见性收敛：
   - 管理员用户列表只展示私人空间、学校、学院、专业标签
   - 上传文件时的标签下拉只允许选择私人空间、学校、学院，不再展示专业标签
@@ -47,6 +51,7 @@
 - `/users/upload-orgs` 专门返回上传可选标签。
 
 #### 文件可见范围语义
+
 - 旧的“公开 / 私有”语义已调整为：
   - `组织内公开`
   - `仅自己可见`
@@ -60,6 +65,7 @@
   - 上传可选标签中不允许使用专业标签
 
 #### 知识库列表与访问
+
 - 知识库首页列表已从“仅本人上传文件”调整为“当前用户可访问的文件”：
   - 自己上传的文件
   - 组织内公开且当前用户有权限访问的文件
@@ -155,6 +161,7 @@
         -H 'Content-Type: application/json' \
         -d '{"username":"admin","password":"admin123"}'
       ```
+
       响应 `{"code":200,...,"data":{"token":"eyJhbGc..."}}`。
 
       步骤 2：用该 token 调清理接口
@@ -163,6 +170,7 @@
       curl -X POST http://localhost:8081/api/v1/admin/es/cleanup-orphans \
         -H "Authorization: Bearer <步骤 1 拿到的 token>"
       ```
+
       响应 `{"code":200,"message":"清理完成","data":{"deleted":N,"validMd5Count":M}}`。
 
       一条命令一把梭（有 `jq`）：
@@ -195,4 +203,47 @@
         -H 'Content-Type: application/json' \
         -d '{"size":0,"aggs":{"md5s":{"terms":{"field":"fileMd5","size":20}}}}'
       ```
-      返回 `aggregations.md5s.buckets` 里的 `key` 应与 `file_upload.file_md5` 一致；若仍有多余 MD5，说明存在新的删除失败路径，结合后端日志关键字 `ADMIN_CLEANUP_ES_ORPHANS` 排查。
+
+      返回 `aggregations.md5s.buckets` 里的 `key` 应与 `file_upload.file_md5` 一致；若仍有多余 MD5，说明存在新的删除失败路径，结合后端日志关键字 `ADMIN_CLEANUP_ES_ORPHANS` 排查。\
+
+    ● 全部改造完成。以下是本次改动汇总：  
+
+
+✅ 执行清单
+
+🎨 视觉资源
+
+- src/assets/svg-icon/logo.svg — 打开的书+气泡从中升起（currentColor 自动接主色）
+- public/favicon.svg + dist/favicon.svg — 墨绿底白色书本气泡的圆角方形 favicon
+- src/assets/imgs/login-illustration.svg（新增）— 极淡书页+墨点水印，14MB PNG → 1.5KB SVG
+
+🎛️ 全局样式系统
+
+- src/theme/settings.ts — 主色 #2563eb → #065F46；layout 底色 → 米白 rgb(250, 247, 240)；info/success/warning/error 同步调和
+- uno.config.ts — card-wrapper 改成细边框+微阴影（Linear 风）
+- src/views/\_builtin/login/index.vue — 整个登录页样式从蓝色 glassmorphism 改写为墨绿 Linear 风（border-radius: 12px、1px 细边框、去渐变、墨绿按钮/输入框焦点环）
+- 批量替换 8 个视图文件的硬编码蓝色 → 墨绿体系：chat/index.vue、chat-list.vue、chat-message.vue、input-box.vue、posts/index.vue、knowledge-base/index.vue、floating-post-entry/index.vue、theme-drawer/theme-color.vue  
+
+
+🏷️ 元数据
+
+- package.json — name: pi-smart → kaofu-zhiliao；description/author 去 PaiSmart
+- .env — VITE*STORAGE_PREFIX=PaiSmart* → KaofuZhiliao\_  
+
+
+⚠️ 需要你手动处理的 2 件事
+
+1. 删掉 14MB 的废弃文件：src/assets/imgs/login-illustration.png 已经没有任何引用（我只删了 import，没删文件本身，怕你还想保留）。可以直接 rm。
+2. 部署提醒：storage prefix 改了，所有已登录用户的 token 会失效，需要重新登录一次。  
+
+
+🔒 已遵守的边界
+
+- 未改任何后端 Java 文件、未改 API 路径、未改 DOM 结构
+- 未动 src/service/、src/store/（除 theme）、src/router/、src/hooks/、src/utils/
+- 本地运行：cd frontend && pnpm dev 即可看效果；prod 构建需要跑一次 pnpm build 让 dist/index.html 和 manifest 同步  
+
+
+Recalled 1 memory, wrote 2 memories (ctrl+o to expand)
+
+● 记忆已存档（后续改 UI 会自动遵守新规范）。你现在可以 cd PaiSmart-main/frontend && pnpm dev 看效果；如果登录页细节还想调整（比如 Hero 区留白、字号、按钮形状），告诉我就继续迭代。

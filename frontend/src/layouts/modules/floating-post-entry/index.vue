@@ -288,7 +288,7 @@ watch(
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #2563eb;
+  color: #065F46;
 }
 
 .entry-card strong {
@@ -316,7 +316,7 @@ watch(
   border-radius: 50%;
   background: linear-gradient(145deg, #eff6ff, #f8fafc);
   box-shadow:
-    0 20px 45px rgba(37, 99, 235, 0.24),
+    0 20px 45px rgba(6, 95, 70, 0.24),
     0 10px 24px rgba(15, 23, 42, 0.12),
     inset 0 2px 0 rgba(255, 255, 255, 0.7);
   cursor: grab;
@@ -331,7 +331,7 @@ watch(
 .entry-button:hover {
   transform: translateY(-3px) scale(1.03);
   box-shadow:
-    0 24px 52px rgba(37, 99, 235, 0.3),
+    0 24px 52px rgba(6, 95, 70, 0.3),
     0 12px 28px rgba(15, 23, 42, 0.16),
     inset 0 2px 0 rgba(255, 255, 255, 0.72);
 }
@@ -347,7 +347,7 @@ watch(
   inset: -8px;
   border-radius: 50%;
   background:
-    radial-gradient(circle, rgba(59, 130, 246, 0.28), transparent 58%),
+    radial-gradient(circle, rgba(4, 120, 87, 0.28), transparent 58%),
     radial-gradient(circle at 70% 75%, rgba(34, 197, 94, 0.22), transparent 32%);
   opacity: 0.9;
   animation: halo-pulse 3.2s ease-in-out infinite;
@@ -372,9 +372,9 @@ watch(
   height: 54px;
   border-radius: 50%;
   color: #fff;
-  background: linear-gradient(135deg, #2563eb 0%, #38bdf8 45%, #22c55e 100%);
+  background: linear-gradient(135deg, #065F46 0%, #14B8A6 45%, #22c55e 100%);
   box-shadow:
-    0 10px 24px rgba(37, 99, 235, 0.28),
+    0 10px 24px rgba(6, 95, 70, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
 
@@ -387,8 +387,8 @@ watch(
   height: 10px;
   border: 2px solid rgba(255, 255, 255, 0.9);
   border-radius: 50%;
-  background: #0ea5e9;
-  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.14);
+  background: #0F766E;
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.14);
 }
 
 .entry-orbit:hover .entry-card,

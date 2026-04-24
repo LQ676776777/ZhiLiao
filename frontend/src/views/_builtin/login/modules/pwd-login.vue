@@ -77,7 +77,7 @@ function openPrivacyModal() {
       </NFormItem>
       <div class="flex-col gap-6">
         <div class="flex justify-end">
-          <NButton text type="primary" size="small" @click="toggleLoginModule('reset-pwd')">
+          <NButton text type="primary" size="small" class="forget-link" @click="toggleLoginModule('reset-pwd')">
             忘记密码？
           </NButton>
         </div>

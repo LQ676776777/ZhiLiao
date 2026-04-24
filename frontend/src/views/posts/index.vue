@@ -446,7 +446,7 @@ onMounted(load);
 .header-card {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.96)),
-    linear-gradient(135deg, rgba(59, 130, 246, 0.04), rgba(34, 197, 94, 0.03));
+    linear-gradient(135deg, rgba(4, 120, 87, 0.04), rgba(34, 197, 94, 0.03));
   border: 1px solid rgba(226, 232, 240, 0.72);
 
   .toolbar {
@@ -483,8 +483,8 @@ onMounted(load);
     margin-left: 2px;
     padding: 2px 8px;
     border-radius: 999px;
-    background: rgba(37, 99, 235, 0.08);
-    color: #2563eb;
+    background: rgba(6, 95, 70, 0.08);
+    color: #065F46;
     font-size: 12px;
     font-weight: 600;
     line-height: 1.4;
@@ -515,8 +515,8 @@ onMounted(load);
 
   .publish-btn {
     min-width: 116px;
-    background: linear-gradient(135deg, #2563eb, #3b82f6);
-    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+    background: linear-gradient(135deg, #065F46, #047857);
+    box-shadow: 0 10px 24px rgba(6, 95, 70, 0.18);
   }
 }
 
@@ -524,7 +524,7 @@ onMounted(load);
   .header-card {
     background:
       linear-gradient(180deg, rgba(17, 24, 39, 0.92), rgba(15, 23, 42, 0.92)),
-      linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(34, 197, 94, 0.08));
+      linear-gradient(135deg, rgba(4, 120, 87, 0.12), rgba(34, 197, 94, 0.08));
     border-color: rgba(51, 65, 85, 0.78);
 
     .filter-btn,
@@ -535,8 +535,8 @@ onMounted(load);
     }
 
     .filter-pill {
-      background: rgba(59, 130, 246, 0.18);
-      color: #93c5fd;
+      background: rgba(4, 120, 87, 0.18);
+      color: #6EE7B7;
     }
 
     .filter-hint {
@@ -549,7 +549,7 @@ onMounted(load);
     }
 
     .publish-btn {
-      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.28);
+      box-shadow: 0 12px 28px rgba(6, 95, 70, 0.28);
     }
   }
 

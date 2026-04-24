@@ -87,13 +87,7 @@ const handShortcut = (e: KeyboardEvent) => {
         提示：按照文件内容检索，建议直接描述知识点、题目内容或关键词；只输入文件名时，可能无法准确命中对应资料。
       </NText>
     </div>
-    <div class="flex items-center justify-between pt-2">
-      <div class="flex items-center text-18px color-gray-500">
-        <NText class="text-14px">通道状态：</NText>
-        <icon-eos-icons:loading v-if="wsStatus === 'CONNECTING'" class="color-yellow" />
-        <icon-fluent:plug-connected-checkmark-20-filled v-else-if="wsStatus === 'OPEN'" class="color-green" />
-        <icon-tabler:plug-connected-x v-else class="color-red" />
-      </div>
+    <div class="flex items-center justify-end pt-2">
       <div class="flex items-center gap-3">
         <NText class="text-12px color-#6b7280 dark:color-#9ca3af">Enter 发送，Ctrl/Shift+Enter 换行</NText>
         <NButton :disabled="sendable" strong circle type="primary" @click="handleSend">
@@ -109,14 +103,14 @@ const handShortcut = (e: KeyboardEvent) => {
 
 <style scoped>
 .exam-input-panel {
-  border: 1px solid rgba(37, 99, 235, 0.25);
+  border: 1px solid rgba(6, 95, 70, 0.25);
   background:
     linear-gradient(135deg, rgba(239, 246, 255, 0.9), rgba(236, 253, 245, 0.72)),
     #fff;
 }
 
 .dark .exam-input-panel {
-  border-color: rgba(96, 165, 250, 0.28);
+  border-color: rgba(16, 185, 129, 0.28);
   background:
     linear-gradient(135deg, rgba(30, 41, 59, 0.78), rgba(17, 24, 39, 0.82)),
     #1c1c1c;

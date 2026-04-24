@@ -527,8 +527,8 @@ async function onBeforeUpload(
   margin-left: 2px;
   padding: 2px 8px;
   border-radius: 999px;
-  background: rgba(37, 99, 235, 0.08);
-  color: #2563eb;
+  background: rgba(6, 95, 70, 0.08);
+  color: #065F46;
   font-size: 12px;
   font-weight: 600;
   line-height: 1.4;

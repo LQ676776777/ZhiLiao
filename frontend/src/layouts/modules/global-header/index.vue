@@ -4,7 +4,6 @@ import { GLOBAL_HEADER_MENU_ID } from '@/constants/app';
 import { useAppStore } from '@/store/modules/app';
 import { useThemeStore } from '@/store/modules/theme';
 import GlobalLogo from '../global-logo/index.vue';
-import GlobalSearch from '../global-search/index.vue';
 import ThemeButton from './components/theme-button.vue';
 import UserAvatar from './components/user-avatar.vue';
 
@@ -40,7 +39,6 @@ const isDev = import.meta.env.DEV;
     <div v-else class="h-full flex-y-center flex-1-hidden">
     </div>
     <div class="h-full flex-y-center justify-end rd-full bg-container px-8 shadow-2xl">
-      <GlobalSearch />
       <FullScreen v-if="!appStore.isMobile" :full="isFullscreen" @click="toggle" />
       <LangSwitch
         v-if="themeStore.header.multilingual.visible"

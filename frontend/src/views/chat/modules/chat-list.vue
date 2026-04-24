@@ -14,10 +14,33 @@ const authStore = useAuthStore();
 const loading = ref(false);
 const scrollbarRef = ref<InstanceType<typeof NScrollbar>>();
 
-watch(() => [...list.value], scrollToBottom);
+// 用户是否希望跟随底部：贴近底部时为 true；用户手动上滑查看历史时置为 false
+const stickToBottom = ref(true);
+let prevListLength = 0;
 
-function scrollToBottom() {
+function handleScroll(e: Event) {
+  const target = e.target as HTMLElement | null;
+  if (!target) return;
+  const distanceToBottom = target.scrollHeight - target.scrollTop - target.clientHeight;
+  stickToBottom.value = distanceToBottom < 80;
+}
+
+// 仅在“新消息追加”时强制滚到底部；流式 token 更新期间遵循用户的滚动位置
+watch(
+  () => list.value.length,
+  newLen => {
+    if (newLen > prevListLength) {
+      stickToBottom.value = true;
+      scrollToBottom(true);
+    }
+    prevListLength = newLen;
+  }
+);
+
+function scrollToBottom(force = false) {
   setTimeout(() => {
+    // 关键：在执行时（而非调度时）再次校验 —— 用户可能在这 100ms 内已上滑
+    if (!force && !stickToBottom.value) return;
     scrollbarRef.value?.scrollBy({
       top: 999999999999999,
       behavior: 'auto'
@@ -71,7 +94,7 @@ onMounted(() => {
 
 <template>
   <Suspense>
-    <NScrollbar ref="scrollbarRef" class="h-0 flex-auto">
+    <NScrollbar ref="scrollbarRef" class="h-0 flex-auto" @scroll="handleScroll">
       <Teleport defer to="#header-extra">
         <div class="review-filter px-10">
           <NForm :model="params" label-placement="left" :show-feedback="false" inline>
@@ -94,7 +117,7 @@ onMounted(() => {
 .review-filter {
   :deep(.n-form-item-label__text) {
     font-weight: 600;
-    color: #1d4ed8;
+    color: #064E3B;
   }
 }
 </style>
